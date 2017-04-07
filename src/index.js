@@ -18,12 +18,12 @@ app.set('port', process.env.PORT || 5000);
 //GET request just to verify webhook url from fb dashbpard/webhook
 app.post('/gora/', function (req, res) {
   var data = req.body;
-  if (("appid" in data) && ("app_secret" in data)) {
+  if (("app_id" in data) && ("app_secret" in data)) {
     logger.log("Validating webhook");
     res.set('Content-Type', 'text/plain');
     res.send(`You sent: ${"Yoo"} to Express`);
   } else {
-    logger.error("Failed validation. Make sure the validation tokens match.");
+    logger.log("Failed validation. Make sure the validation tokens match.");
     res.sendStatus(403);
   }
 });  
