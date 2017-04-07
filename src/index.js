@@ -20,8 +20,8 @@ app.post('/gora/', function (req, res) {
   var data = req.body;
   if (("appid" in data) && ("app_secret" in data)) {
     logger.log("Validating webhook");
-    res.set('Content-Type', 'text/plain')
-    res.send(`You sent: ${body} to Express`)
+    res.set('Content-Type', 'text/plain');
+    res.send(`You sent: ${"Yoo"} to Express`);
   } else {
     logger.error("Failed validation. Make sure the validation tokens match.");
     res.sendStatus(403);
