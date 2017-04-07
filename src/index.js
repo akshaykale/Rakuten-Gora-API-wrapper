@@ -18,6 +18,7 @@ app.set('port', process.env.PORT || 5000);
 //GET request just to verify webhook url from fb dashbpard/webhook
 app.post('/gora/', function (req, res) {
   var data = req.body;
+  logger.log(JSON.stringify(data));
   if (("app_id" in data) && ("app_secret" in data)) {
     logger.log("Validating webhook");
     res.set('Content-Type', 'text/plain');
