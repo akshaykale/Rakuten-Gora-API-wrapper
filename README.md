@@ -21,15 +21,9 @@ POST /gora/golfcourse HTTP/1.1
 Host: localhost:5000
 Content-Type: application/x-www-form-urlencoded
 Cache-Control: no-cache
-Postman-Token: ec97c717-773c-a336-dfa6-a9148796367d
+Postman-Token: 3ba6f3ea-ba02-b618-81c0-3b3c55476b1e
 
-{
-"app_id":"",
-"app_secret":"",
-"place":"",
-"date":"",
-"category":""
-}
+param={"app_id":"sd","app_secret":"akshay","place":"","date":"","category":""}
 ```
 Response:
 ```
