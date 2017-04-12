@@ -1,6 +1,11 @@
 
 var exports = module.exports = {};
 
+const 
+    Client = require('node-rest-client').Client,
+    logger = require("./logger.js");
+
+var restClient = new Client();
 
 /*
 
@@ -16,8 +21,17 @@ Ex: var appID = resp.app_id;
 
 @return goraResp #response obtained from GORA APIs
 */
+
 function callGoraAPIs(resp) {
-    
+    /*
+    restClient.get("URL", function (data, response) {
+        // parsed response body as js object 
+        logger.log(data);
+        // raw response 
+        logger.log(response);
+        return data;
+    });
+    */
 }
 
 
