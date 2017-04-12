@@ -9,21 +9,29 @@ const
 // Create a new instance of express
 const app = express();
 
-
 // Tell express to use the body-parser middleware and to not parse extended bodies
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
 //app port
 app.set('port', process.env.PORT || 5000);
 
 //GET request just to verify webhook url from fb dashbpard/webhook
-app.post('/gora/', function (req, res) {
+app.post('/gora/golfcourse', function (req, res) {
   var data = req.body;
-  logger.log("data: "+data);
-  logger.log("Request: "+req);
+  logger.log(req.body);
   if (("app_id" in data) && ("app_secret" in data)) {
-    logger.log("Validating webhook");
+    var place = data.place;
+    var date = data.date;
+    var category = data.category;
+    
+    var retData = {
+      "title":"",
+      "df":""
+    }
+
     res.set('Content-Type', 'text/plain');
-    res.send(`You sent: ${"Yoo"} to Express`);
+    res.send(retData);
   } else {
     logger.log("Failed validation. Make sure the validation tokens match.");
     res.sendStatus(403);
