@@ -4,31 +4,26 @@ const
   express = require('express'),
   https = require('https'),
   logger = require("./logger.js"),
-  request = require('request');
-
+  request = require('request'),
+  golfcourse = require("./golfcourse.js");
 // Create a new instance of express
 const app = express();
 
 // Tell express to use the body-parser middleware and to not parse extended bodies
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(bodyParser.raw());
+app.use(bodyParser.json({ extended: false }));
+app.use(bodyParser.raw({ extended: false }));
 //app port
 app.set('port', process.env.PORT || 5000);
 
-//GET request just to verify webhook url from fb dashbpard/webhook
+//POST /gora/golfcourse
 app.post('/gora/golfcourse', function (req, res) {
-  var data = req.body;
-  logger.log(req.body);
+  var data = req.body.param; //JSON object with all the request data
+  data = JSON.parse(data);
+  logger.log("REQUEST params: -> "+ data);
   if (("app_id" in data) && ("app_secret" in data)) {
-    var place = data.place;
-    var date = data.date;
-    var category = data.category;
     
-    var retData = {
-      "title":"",
-      "df":""
-    }
+    var retData = golfcourse.get(data);
 
     res.set('Content-Type', 'text/plain');
     res.send(retData);
