@@ -23,10 +23,8 @@ app.post('/gora/golfcourse', function (req, res) {
   logger.log("REQUEST params: -> "+ JSON.stringify(data));
   if (("app_id" in data) && ("app_secret" in data)) {
     
-    var retData = golfcourse.get(data);
+    golfcourse.get(data, res);
 
-    res.set('Content-Type', 'text/plain');
-    res.send(retData);
   } else {
     logger.log("Failed validation. Make sure the validation tokens match.");
     res.sendStatus(403);
