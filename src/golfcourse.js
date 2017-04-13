@@ -100,7 +100,7 @@ function parseGolfCourse(goraResp, res){
         results.push(result);
     }
     
-    logger.log(results);
+    //logger.log(results);
     res.set('Content-Type', 'application/json');
     res.send(results);
 }
@@ -129,7 +129,7 @@ exports.get = function(param,resp){
 
     restClient.get(URL, function (data, res) {
         // parsed response body as js object 
-        logger.log(data);
+        //logger.log(data);
         
         parseGolfCourse(data,resp);
     });
