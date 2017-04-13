@@ -100,8 +100,8 @@ function parseGolfCourse(goraResp, res){
         results.push(result);
     }
     
-    //logger.log(results);
-    res.set('Content-Type', 'text/plain');
+    logger.log(results);
+    res.set('Content-Type', 'application/json');
     res.send(results);
 }
 
@@ -129,7 +129,8 @@ exports.get = function(param,resp){
 
     restClient.get(URL, function (data, res) {
         // parsed response body as js object 
-        //logger.log(resp);
+        logger.log(data);
+        
         parseGolfCourse(data,resp);
     });
 }
