@@ -21,12 +21,8 @@ var result ={
   "address":"",
   "rating":"",
   "pictures":["","",""],
-  "reviews":["","",""],
-  "book_url":"",
-  "location":{
-    "lat":"",
-    "lng":""
-  }
+  "item_url":"",
+  "shop_url":""
 }
 */
 
@@ -71,7 +67,9 @@ resp = {
     "app_secret":"",
     "place":"",
     "date":"",
-    "category":""
+    "category":"",
+    "sex":"",
+
 }
 Ex: var appID = resp.app_id;
 
@@ -93,7 +91,6 @@ exports.get = function(param,resp){
 
     restClient.get(URL, function (data, res) {
         // parsed response body as js object 
-        //logger.log(resp);
         parseIchibaItem(data,resp);
     });
 }
