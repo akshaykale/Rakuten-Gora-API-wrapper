@@ -6,6 +6,7 @@ const
   logger = require("./logger.js"),
   request = require('request'),
   golfcourse = require("./golfcourse.js"),
+  golfplan = require("./golfplan.js"),
   ichibaitem = require("./ichibaitem.js");
 // Create a new instance of express
 const app = express();
@@ -32,6 +33,20 @@ app.post('/gora/golfcourse', function (req, res) {
   }
 });  
 
+//POST /gora/golfplan
+app.post('/gora/golfplan', function (req, res) {
+  var data = req.body.param; //JSON object with all the request data
+  data = JSON.parse(data);
+  logger.log("REQUEST params: -> "+ JSON.stringify(data));
+  if (("app_id" in data) && ("app_secret" in data)) {
+    
+    golfplan.get(data, res);
+
+  } else {
+    logger.log("Failed validation. Make sure the validation tokens match.");
+    res.sendStatus(403);
+  }
+}); 
 
 //POST /gora/ichiba
 app.post('/gora/ichibaitem', function (req, res) {
