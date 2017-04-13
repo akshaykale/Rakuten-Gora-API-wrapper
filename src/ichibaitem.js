@@ -52,7 +52,7 @@ function parseIchibaItem(ichibaResp, res){
     
 
     logger.log(results);
-    res.set('Content-Type', 'text/plain');
+    res.set('Content-Type', 'application/json');
     res.send(results);
     
 }
