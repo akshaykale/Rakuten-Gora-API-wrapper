@@ -97,6 +97,7 @@ function parseGolfPlan(goraResp, res){
             var plan = {};
             plan["planName"] = goraResp.Items[item]["Item"]["planInfo"][num]["plan"]["planName"];
             plan["price"] = goraResp.Items[item]["Item"]["planInfo"][num]["plan"]["price"];
+            plan["url"] = goraResp.Items[item]["Item"]["planInfo"][num]["plan"]["reservePageUrlPC"];
             plans.push(plan);
         }
         logger.log(plans);
