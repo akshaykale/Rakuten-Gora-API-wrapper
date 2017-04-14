@@ -100,7 +100,7 @@ function parseGolfCourse(goraResp, res){
         results.push(result);
     }
     
-    //logger.log(results);
+    logger.log(results);
     res.set('Content-Type', 'application/json');
     res.send(results);
 }
@@ -122,14 +122,15 @@ Ex: var appID = resp.app_id;
 @return goraResp #response obtained from GORA APIs
 */
 
-exports.get = function(param,resp){
+exports.get = function(date, place,resp){
     //logger.log(resp);
-    var areaCode = areacodes[param.place];
-    var URL = "https://app.rakuten.co.jp/services/api/Gora/GoraGolfCourseSearch/20131113?format=json&hits=5&sort=evaluation&" + "areaCode=" + areaCode + "&applicationId=" + param.app_id;
+    var areaCode = areacodes[place];
+
+    var URL = "https://app.rakuten.co.jp/services/api/Gora/GoraGolfCourseSearch/20131113?format=json&hits=5&sort=evaluation&" + "areaCode=" + areaCode + "&applicationId=" + process.env.APP_ID;
 
     restClient.get(URL, function (data, res) {
         // parsed response body as js object 
-        //logger.log(data);
+        logger.log(data);
         
         parseGolfCourse(data,resp);
     });
