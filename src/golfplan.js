@@ -97,10 +97,10 @@ function parseGolfPlan(goraResp, res){
             var plan = {};
             plan["planName"] = goraResp.Items[item]["Item"]["planInfo"][num]["plan"]["planName"];
             plan["price"] = goraResp.Items[item]["Item"]["planInfo"][num]["plan"]["price"];
-            plan["url"] = goraResp.Items[item]["Item"]["planInfo"][num]["plan"]["reservePageUrlPC"];
+            plan["url"] = goraResp.Items[item]["Item"]["planInfo"][num]["plan"]["callInfo"]["reservePageUrlPC"];
             plans.push(plan);
         }
-        logger.log(plans);
+        //logger.log(plans);
         result["plan"] = plans;
         results.push(result);
     }
@@ -130,7 +130,6 @@ Ex: var appID = resp.app_id;
 exports.get = function(date, place,resp){
     //logger.log(resp);
     var areaCode = areacodes[place];
-
     var URL = "https://app.rakuten.co.jp/services/api/Gora/GoraPlanSearch/20150706?format=json&hits=5&sort=evaluation&" + "areaCode=" + areaCode + "&playDate="+ date + "&applicationId=" + process.env.APP_ID;
 
     restClient.get(URL, function (data, res) {
