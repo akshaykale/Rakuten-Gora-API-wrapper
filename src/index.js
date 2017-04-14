@@ -21,7 +21,9 @@ app.set('port', process.env.PORT || 5000);
 //POST /gora/golfcourse
 app.post('/gora/golfcourse', function (req, res) {
   var data = req.body.param; //JSON object with all the request data
-  data = JSON.parse(data);
+  logger.log("body:   ->   "+JSON.stringify(data));
+  
+  //data = JSON.parse(data);
   logger.log("REQUEST params: -> "+ JSON.stringify(data));
   if (("app_id" in data) && ("app_secret" in data)) {
     
@@ -51,7 +53,7 @@ app.post('/gora/golfplan', function (req, res) {
 //POST /gora/ichiba
 app.post('/gora/ichibaitem', function (req, res) {
   var data = req.body.param; //JSON object with all the request data
-  data = JSON.parse(data);
+  //data = JSON.parse(data);
   logger.log("REQUEST params: -> "+ JSON.stringify(data));
   if (("app_id" in data) && ("app_secret" in data)) {
     
