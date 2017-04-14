@@ -105,7 +105,7 @@ function parseGolfPlan(goraResp, res){
     }
     
     //logger.log(results);
-    res.set('Content-Type', 'text/plain');
+    res.set('Content-Type', 'application/json');
     res.send(results);
 }
 
@@ -126,11 +126,11 @@ Ex: var appID = resp.app_id;
 @return goraResp #response obtained from GORA APIs
 */
 
-exports.get = function(param,resp){
+exports.get = function(date, place,resp){
     //logger.log(resp);
-    var areaCode = areacodes[param.place];
+    var areaCode = areacodes[place];
 
-    var URL = "https://app.rakuten.co.jp/services/api/Gora/GoraPlanSearch/20150706?format=json&hits=5&sort=evaluation&" + "areaCode=" + areaCode + "&playDate="+ param.date + "&applicationId=" + param.app_id;
+    var URL = "https://app.rakuten.co.jp/services/api/Gora/GoraPlanSearch/20150706?format=json&hits=5&sort=evaluation&" + "areaCode=" + areaCode + "&playDate="+ date + "&applicationId=" + process.env.APP_ID;
 
     restClient.get(URL, function (data, res) {
         // parsed response body as js object 

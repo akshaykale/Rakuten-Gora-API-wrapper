@@ -43,7 +43,9 @@ function parseIchibaItem(ichibaResp, res){
 
         pic = [];
         for (num in ichibaResp.Items[item]["Item"]["mediumImageUrls"]) {
-            pic.push(ichibaResp.Items[item]["Item"]["mediumImageUrls"][num]["imageUrl"]);
+            var url = ichibaResp.Items[item]["Item"]["mediumImageUrls"][num]["imageUrl"];
+            url = url.split("?")[0];
+            pic.push(url);
         }
 
         result["picture"] = pic;
@@ -76,17 +78,17 @@ Ex: var appID = resp.app_id;
 @return goraResp #response obtained from GORA APIs
 */
 
-exports.get = function(param,resp){
+exports.get = function(key, sex, resp){
     //logger.log(resp);
-    var keyword = param.keyword;
-    if (param.sex == 'man') {
+    var keyword = key;
+    if (sex == 'man') {
         keyword = keyword + ' メンズ';
-    } else if (param.sex == 'woman') {
+    } else if (sex == 'woman') {
         keyword = keyword + ' レディース';
     }
     keyword = encodeURI(keyword);
 
-    var URL = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&hits=5&sort=-reviewCount&genreId=101077&keyword=" + keyword + "&applicationId=" + param.app_id;
+    var URL = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222?format=json&hits=5&sort=-reviewCount&genreId=101077&imageFlag=1&keyword=" + keyword + "&applicationId=" + process.env.APP_ID;
     logger.log(URL);
 
     restClient.get(URL, function (data, res) {

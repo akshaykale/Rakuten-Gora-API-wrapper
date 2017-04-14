@@ -19,15 +19,20 @@ app.use(bodyParser.raw({ extended: false }));
 app.set('port', process.env.PORT || 5000);
 
 //POST /gora/golfcourse
-app.post('/gora/golfcourse', function (req, res) {
-  var data = req.body.param; //JSON object with all the request data
-  logger.log("body:   ->   "+JSON.stringify(data));
+app.get('/gora/golfcourse', function (req, res) {
+  
+  //logger.log(JSON.stringify(req));
+  
+  var date = req.query.date; //JSON object with all the request data
+  var place = req.query.place;
+
+  logger.log(place + "body:   ->   "+date);
   
   //data = JSON.parse(data);
-  logger.log("REQUEST params: -> "+ JSON.stringify(data));
-  if (("app_id" in data) && ("app_secret" in data)) {
+  //logger.log("REQUEST params: -> "+ JSON.stringify(req));
+  if (date && place) {
     
-    golfcourse.get(data, res);
+    golfcourse.get(date, place, res);
 
   } else {
     logger.log("Failed validation. Make sure the validation tokens match.");
@@ -36,13 +41,14 @@ app.post('/gora/golfcourse', function (req, res) {
 });  
 
 //POST /gora/golfplan
-app.post('/gora/golfplan', function (req, res) {
-  var data = req.body.param; //JSON object with all the request data
-  data = JSON.parse(data);
-  logger.log("REQUEST params: -> "+ JSON.stringify(data));
-  if (("app_id" in data) && ("app_secret" in data)) {
+app.get('/gora/golfplan', function (req, res) {
+  var date = req.query.date; //JSON object with all the request data
+  var place = req.query.place;
+  //data = JSON.parse(data);
+  //logger.log("REQUEST params: -> "+ JSON.stringify(data));
+  if (date && place) {
     
-    golfplan.get(data, res);
+    golfplan.get(date, place, res);
 
   } else {
     logger.log("Failed validation. Make sure the validation tokens match.");
@@ -51,13 +57,14 @@ app.post('/gora/golfplan', function (req, res) {
 }); 
 
 //POST /gora/ichiba
-app.post('/gora/ichibaitem', function (req, res) {
-  var data = req.body.param; //JSON object with all the request data
+app.get('/gora/ichibaitem', function (req, res) {
+  var key = req.query.keyword; //JSON object with all the request data
+  var sex = req.query.gender
   //data = JSON.parse(data);
-  logger.log("REQUEST params: -> "+ JSON.stringify(data));
-  if (("app_id" in data) && ("app_secret" in data)) {
+  //logger.log("REQUEST params: -> "+ JSON.stringify(data));
+  if (key && sex) {
     
-    ichibaitem.get(data, res);
+    ichibaitem.get(key, sex, res);
 
   } else {
     logger.log("Failed validation. Make sure the validation tokens match.");
