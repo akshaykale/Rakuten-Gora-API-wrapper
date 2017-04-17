@@ -7,7 +7,9 @@ const
   request = require('request'),
   golfcourse = require("./golfcourse.js"),
   golfplan = require("./golfplan.js"),
+  hotels = require("./hotels.js"),
   ichibaitem = require("./ichibaitem.js");
+
 // Create a new instance of express
 const app = express();
 
@@ -65,6 +67,24 @@ app.get('/gora/ichibaitem', function (req, res) {
   if (key && sex) {
     
     ichibaitem.get(key, sex, res);
+
+  } else {
+    logger.log("Failed validation. Make sure the validation tokens match.");
+    res.sendStatus(403);
+  }
+});  
+
+//POST /gora/hotels
+app.get('/gora/hotels', function (req, res) {
+  var cin = req.query.cin; //JSON object with all the request data
+  var cout = req.query.cout;
+  var lat = req.query.lat;// || null;
+  var lng = req.query.lng;
+  //data = JSON.parse(data);
+  //logger.log("REQUEST params: -> "+ JSON.stringify(data));
+  if (cin && cout && lat && lng) {
+    
+    hotels.get(cin, cout, lat, lng, res);
 
   } else {
     logger.log("Failed validation. Make sure the validation tokens match.");
