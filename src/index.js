@@ -97,7 +97,7 @@ app.get('/gora/hotels', function (req, res) {
 * Movies info chat bot for dialogflow
 */
 const { WebhookClient } = require('dialogflow-fulfillment');
-const {Card} = require('dialogflow-fulfillment');
+const {Text, Card, Image, Suggestion, Payload} = require('dialogflow-fulfillment');
 app.post('/getMovieInfo', (req, res) => {
   //Create an instance
   const agent = new WebhookClient({request: req, response: res});
@@ -125,13 +125,11 @@ moviesIntentHandler = (agent) => {
           let dataToSend = movieToSearch === 'The Godfather' ? `I don't have the required info on that. Here's some info on 'The Godfather' instead.\n` : '';
           dataToSend += `${movie.Title} is a ${movie.Actors} starer ${movie.Genre} movie, released in ${movie.Year}. It was directed by ${movie.Director}`;
           console.log(dataToSend)
-          agent.add(new Card({
-            title: movie.Title,
-            imageUrl: movie.Poster,
-            text: movie.dataToSend,
-            buttonText: 'Details',
-            buttonUrl: movie.WebSite
-          }));
+          const card = new Card(movie.Title);
+          card.setImage(movie.Poster);
+          card.setText(dataToSend)
+          card.setButton({text:'Details', url: movie.WebSite || 'www.google.com'})
+          agent.add(card);
       });
   }, (error) => {
     console.log('Error in IMDB API.')
