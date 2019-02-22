@@ -136,7 +136,7 @@ moviesIntentHandler =  async (agent) => {
     await agent.add(dataToSend).catch((err) => {console.log(err)});
   }).catch((err) => {
     console.log('Error')
-    agent.add('Error')
+    //agent.add('Error')
   });
 };
 
