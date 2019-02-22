@@ -96,48 +96,70 @@ app.get('/gora/hotels', function (req, res) {
 /* START
 * Movies info chat bot for dialogflow
 */
+
+app.post('/imdb/movie', (req, res) => {
+  callImdbApi(req.body.movieName).then((movie) => {
+    res.send(movie)
+  }).catch((err) => {
+    res.send('Error')
+  })
+});
+
 const { WebhookClient } = require('dialogflow-fulfillment');
 const {Text, Card, Image, Suggestion, Payload} = require('dialogflow-fulfillment');
-app.post('/getMovieInfo', (req, res) => {
+app.post('/getMovieInfo', (request, response) => {
   //Create an instance
-  const agent = new WebhookClient({request: req, response: res});
   console.log('hit');
-  console.log(req.body);
+  console.log(request.body);
+  const agent = new WebhookClient({request, response});
   let intentMap = new Map();
   intentMap.set('GetReleaseYearByTitle', moviesIntentHandler);
   agent.handleRequest(intentMap);
 });
 
-moviesIntentHandler = (agent) => {
+moviesIntentHandler =  (agent) => {
   const API_KEY = process.env.IMDB_API;
-  const http = require('http');
   const params = agent.parameters;
-  console.log(params);
+  console.log(parameters);
   const movieToSearch = params.movieName || 'The Godfather';
-  const reqUrl = encodeURI(`http://www.omdbapi.com/?t=${movieToSearch}&apikey=${API_KEY}`);
-  http.get(reqUrl, (responseFromAPI) => {
-      let completeResponse = '';
-      responseFromAPI.on('data', (chunk) => {
-          completeResponse += chunk;
-      });
-      responseFromAPI.on('end', () => {
-          const movie = JSON.parse(completeResponse);
-          let dataToSend = movieToSearch === 'The Godfather' ? `I don't have the required info on that. Here's some info on 'The Godfather' instead.\n` : '';
-          dataToSend += `${movie.Title} is a ${movie.Actors} starer ${movie.Genre} movie, released in ${movie.Year}. It was directed by ${movie.Director}`;
-          console.log(dataToSend)
-          const card = new Card(movie.Title);
-          card.setImage(movie.Poster);
-          card.setText(dataToSend)
-          card.setButton({text:'Details', url: movie.WebSite || 'www.google.com'})
-          agent.add(card);
-      });
-  }, (error) => {
-    console.log('Error in IMDB API.')
-    agent.add(new Card({
-      title: 'Error',
-      text: 'Try with different movie name.'
-    }));
+  //const reqUrl = encodeURI(`http://www.omdbapi.com/?t=${movieToSearch}&apikey=${API_KEY}`);
+  callImdbApi(movieToSearch).then((movie) => {
+    let dataToSend = movieToSearch === 'The Godfather' ? `I don't have the required info on that. Here's some info on 'The Godfather' instead.\n` : '';
+    dataToSend += `${movie.Title} is a ${movie.Actors} starer ${movie.Genre} movie, released in ${movie.Year}. It was directed by ${movie.Director}`;
+    console.log(dataToSend)
+
+    const card = new Card(movie.Title);
+    card.setImage(movie.Poster);
+    card.setText(dataToSend)
+    card.setButton({text:'Details', url: movie.WebSite || 'www.google.com'})
+
+    agent.add(card);
+  }).catch((err) => {
+    console.log('Error')
+    agent.add('Error')
   });
+};
+
+callImdbApi = (movieName) => {
+  return new Promise((resolve, reject) => {
+    const API_KEY = process.env.IMDB_API;
+    const http = require('http');
+    console.log(movieName);
+    const reqUrl = encodeURI(`http://www.omdbapi.com/?t=${movieName}&apikey=${API_KEY}`);
+    http.get(reqUrl, (responseFromAPI) => {
+        let completeResponse = '';
+        responseFromAPI.on('data', (chunk) => {
+            completeResponse += chunk;
+        });
+        responseFromAPI.on('end',  () => {
+          const movie = JSON.parse(completeResponse);
+          resolve(movie)
+        });
+    }, (error) => {
+      console.log('Error in IMDB API.')
+      reject('error')
+    });
+  })
 };
 /* END
 * Movies info chat bot for dialogflow
