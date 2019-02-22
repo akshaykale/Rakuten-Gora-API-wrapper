@@ -132,8 +132,8 @@ moviesIntentHandler =  async (agent) => {
     card.setImage(movie.Poster);
     card.setText(dataToSend)
     card.setButton({text:'Details', url: movie.Website || 'www.google.com'})
-
-    await agent.add(dataToSend).catch((err) => {console.log(err)});
+    await agent.add(card).catch((err) => {console.log(err)});
+    //await agent.add(dataToSend).catch((err) => {console.log(err)});
   }).catch((err) => {
     console.log('Error')
     //agent.add('Error')
