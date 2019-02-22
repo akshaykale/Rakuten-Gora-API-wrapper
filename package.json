@@ -24,7 +24,9 @@
     "node-rest-client": "^3.1.0",
     "request": "^2.72.0",
     "winston": "^2.3.1",
-    "winston-console-formatter": "^0.3.1"
+    "winston-console-formatter": "^0.3.1",
+    "actions-on-google": "^2.6.0",
+    "dialogflow-fulfillment": "^0.6.1"
   },
   "author": "AKSHAY KALE",
   "license": "ISC",
