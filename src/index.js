@@ -92,12 +92,26 @@ app.get('/gora/hotels', function (req, res) {
   }
 });  
 
+
+/* START
+* Movies info chat bot for dialogflow
+*/
+const { WebhookClient } = require('dialogflow-fulfillment');
+const {Card} = require('dialogflow-fulfillment');
 app.post('/getMovieInfo', (req, res) => {
+  //Create an instance
+  const agent = new WebhookClient({request: req, response: res});
   console.log('hit');
+  console.log(req.body);
+  let intentMap = new Map();
+  intentMap.set('GetReleaseYearByTitle', moviesIntentHandler);
+  agent.handleRequest(intentMap);
+});
+
+moviesIntentHandler = (agent) => {
   const API_KEY = process.env.IMDB_API;
   const http = require('http');
   const movieToSearch = req.body.result && req.body.result.parameters && req.body.result.parameters.movie ? req.body.result.parameters.movie : 'The Godfather';
-  console.log(req.body);
   const reqUrl = encodeURI(`http://www.omdbapi.com/?t=${movieToSearch}&apikey=${API_KEY}`);
   http.get(reqUrl, (responseFromAPI) => {
       let completeResponse = '';
@@ -108,22 +122,26 @@ app.post('/getMovieInfo', (req, res) => {
           const movie = JSON.parse(completeResponse);
           let dataToSend = movieToSearch === 'The Godfather' ? `I don't have the required info on that. Here's some info on 'The Godfather' instead.\n` : '';
           dataToSend += `${movie.Title} is a ${movie.Actors} starer ${movie.Genre} movie, released in ${movie.Year}. It was directed by ${movie.Director}`;
-
-          return res.json({
-              speech: dataToSend,
-              displayText: dataToSend,
-              source: 'get-movie-details'
-          });
+          console.log(dataToSend)
+          agent.add(new Card({
+            title: movie.Title,
+            imageUrl: movie.Poster,
+            text: movie.dataToSend,
+            buttonText: 'Details',
+            buttonUrl: movie.WebSite
+          }));
       });
   }, (error) => {
-      return res.json({
-          speech: 'Something went wrong!',
-          displayText: 'Something went wrong!',
-          source: 'get-movie-details'
-      });
+    console.log('Error in IMDB API.')
+    agent.add(new Card({
+      title: 'Error',
+      text: 'Try with different movie name.'
+    }));
   });
-});
-
+};
+/* END
+* Movies info chat bot for dialogflow
+*/
 
 
 // Tell our app to listen on port 
