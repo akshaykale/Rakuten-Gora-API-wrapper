@@ -117,13 +117,13 @@ app.post('/getMovieInfo', (request, response) => {
   agent.handleRequest(intentMap);
 });
 
-moviesIntentHandler =  (agent) => {
+moviesIntentHandler =  async (agent) => {
   const API_KEY = process.env.IMDB_API;
   const params = agent.parameters;
   console.log(params);
   const movieToSearch = params.movieName || 'The Godfather';
   //const reqUrl = encodeURI(`http://www.omdbapi.com/?t=${movieToSearch}&apikey=${API_KEY}`);
-  callImdbApi(movieToSearch).then((movie) => {
+  await callImdbApi(movieToSearch).then( async (movie) => {
     let dataToSend = movieToSearch === 'The Godfather' ? `I don't have the required info on that. Here's some info on 'The Godfather' instead.\n` : '';
     dataToSend += `${movie.Title} is a ${movie.Actors} starer ${movie.Genre} movie, released in ${movie.Year}. It was directed by ${movie.Director}`;
     console.log(dataToSend)
@@ -133,7 +133,7 @@ moviesIntentHandler =  (agent) => {
     card.setText(dataToSend)
     card.setButton({text:'Details', url: movie.Website || 'www.google.com'})
 
-    agent.add(dataToSend);
+    await agent.add(dataToSend).catch((err) => {console.log(err)});
   }).catch((err) => {
     console.log('Error')
     agent.add('Error')
