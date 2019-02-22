@@ -131,9 +131,9 @@ moviesIntentHandler =  (agent) => {
     const card = new Card(movie.Title);
     card.setImage(movie.Poster);
     card.setText(dataToSend)
-    card.setButton({text:'Details', url: movie.WebSite || 'www.google.com'})
+    card.setButton({text:'Details', url: movie.Website || 'www.google.com'})
 
-    agent.add(card);
+    agent.add(dataToSend);
   }).catch((err) => {
     console.log('Error')
     agent.add('Error')
