@@ -111,7 +111,9 @@ app.post('/getMovieInfo', (req, res) => {
 moviesIntentHandler = (agent) => {
   const API_KEY = process.env.IMDB_API;
   const http = require('http');
-  const movieToSearch = req.body.result && req.body.result.parameters && req.body.result.parameters.movie ? req.body.result.parameters.movie : 'The Godfather';
+  const params = agent.parameters;
+  console.log(parameters);
+  const movieToSearch = params.movieName || 'The Godfather';
   const reqUrl = encodeURI(`http://www.omdbapi.com/?t=${movieToSearch}&apikey=${API_KEY}`);
   http.get(reqUrl, (responseFromAPI) => {
       let completeResponse = '';
